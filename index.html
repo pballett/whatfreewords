@@ -1,24 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="./wlist.js"></script>
 <script>
 var lat; 
 var lon;
 function latlon2index() {
-  lat = document.getElementById("lat");
-  lon = document.getElementById("lon");
-  document.getElementById("output_text").innerHTML = "Hello!";
+  lat = parseFloat(document.getElementById("lat").value);
+  lon = parseFloat(document.getElementById("lon").value);
+  lat = Math.round(lat * 10000) +  900000;
+  lon = Math.round(lon * 10000) + 1800000;
+  lat = ('' + lat).padStart(7,'0');
+  lon = ('' + lon).padStart(7,'0');
+  ind1 = lat.slice(0,5)
+  ind2 = lon.slice(0,5)
+  ind3 = '0'+lat.slice(5,7) + lon.slice(5,7)
+  document.getElementById("output_text").innerHTML = wlist[ind1] +"."+ wlist[ind2] + "." + wlist[ind3];
 }
 
 </script>
 </head>
 <body>
 
-<h2>Test</h2>
+<input type="text" id="lat" value="34.3448"/>
+<input type="text" id="lon" value="-20.3323"/>
+</br>
+<button type="button" onclick='latlon2index()'>Where am I?</button>
 
-<input type="text" id="lat">34.3448</input>
-<input type="text" id="lon">-20.3934</input>
-<input type="buttom" onclick='latlon2index()'>Click here!</button>
 <p id="output_text"></p>
 </body>
 </html>
