@@ -1,12 +1,24 @@
 <!DOCTYPE html>
 <html>
+<head>
+<script>
+var lat; 
+var lon;
+function latlon2index() {
+  lat = document.getElementById("lat");
+  lon = document.getElementById("lon");
+  document.getElementById("output_text").innerHTML = "Hello!";
+}
+
+</script>
+</head>
 <body>
 
 <h2>Test</h2>
 
-<p id="active">Here is a sentence.</p>
-
-<button type="button" onclick='document.getElementById("active").innerHTML = "Here is another."'>Click Me!</button>
-
+<input type="text" id="lat">34.3448</input>
+<input type="text" id="lon">-20.3934</input>
+<input type="buttom" onclick='latlon2index()'>Click here!</button>
+<p id="output_text"></p>
 </body>
 </html>
