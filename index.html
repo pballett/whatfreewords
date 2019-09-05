@@ -108,7 +108,6 @@ function words_to_coord(words) {
 	lon = parseFloat(lon - 1800000)/10000.0;
 	lat = parseFloat(lat -  900000)/10000.0;
 
-//	document.getElementById("output_text3").innerHTML= lat+", "+lon;
 	var coord = [lat,lon];	
 	return coord;
 };
@@ -116,30 +115,45 @@ function words_to_coord(words) {
 </script>
     <h3>WhatFreeWords</h3>
     <p id="output_text">words.are.bad</p>
-    <!--<p id="output_text4">00000 00000 00000</p>
+   <!-- <p id="output_text4">00000 00000 00000</p>
     <p id="output_text2">0.000000</p>
     <p id="output_text3">0.000000</p>-->
     <div id="map" class="map"></div>
-    
+<div id="marker" title="Marker"><img src="https://cdn.mapmarker.io/api/v1/fa/stack?size=50&color=DC4C3F&icon=fa-microchip&hoffset=1" /></div>
     <script type="text/javascript">
       var map = new ol.Map({
         target: 'map',
         layers: [
           new ol.layer.Tile({
             source: new ol.source.OSM()
-          })
+          }) 
         ],
         view: new ol.View({
           center: ol.proj.fromLonLat([-0.116708278, 51.50844113]),
           zoom: 16
         })
       });
-      var mousePosition = new ol.control.MousePosition({
-	coordinateFormat: coord_to_words,
-        projection: 'EPSG:4326',
-        undefinedHTML: '&nbsp;'
-      });
-	map.addControl(mousePosition);
-    </script>
+	var marker = new ol.Overlay({
+                        position: ol.proj.fromLonLat([-0.116708278, 51.50844113]),
+                        positioning: 'center-center',
+                        element: document.getElementById('marker'),
+                        stopEvent: false
+                    });
+         map.addOverlay(marker);
+      function onMove(evt) {
+        var map = evt.map;
+	var lonlat = ol.proj.transform(map.getView().getCenter(), 'EPSG:3857', 'EPSG:4326');
+	coord_to_words(lonlat);
+	var marker = new ol.Overlay({
+                        position: ol.proj.fromLonLat(lonlat),
+                        positioning: 'center-center',
+                        element: document.getElementById('marker'),
+                        stopEvent: false
+                    });
+         map.addOverlay(marker);
+
+      };
+	map.on('postrender', onMove);
+	    </script>
   </body>
 </html>
