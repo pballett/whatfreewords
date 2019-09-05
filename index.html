@@ -144,14 +144,7 @@ function words_to_coord(words) {
         var map = evt.map;
 	var lonlat = ol.proj.transform(map.getView().getCenter(), 'EPSG:3857', 'EPSG:4326');
 	coord_to_words(lonlat);
-	var marker = new ol.Overlay({
-                        position: ol.proj.fromLonLat(lonlat),
-                        positioning: 'center-center',
-                        element: document.getElementById('marker'),
-                        stopEvent: false
-                    });
-         map.addOverlay(marker);
-
+	marker.setPosition( map.getView().getCenter());
       };
 	map.on('postrender', onMove);
 	    </script>
