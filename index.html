@@ -18,6 +18,7 @@ var ilist = {};
 for(var key in wlist){
 	ilist[wlist[key]] = key;
 };
+// This is just a block cipher
 function f(L,R){
 	x = parseInt(L);
 	y = parseInt(R);
@@ -33,6 +34,7 @@ function f(L,R){
 	       	 "8746293105"];
 	return block[y][x];
 };
+// An arbitrary hard-coded complicated function
 function F(L,K){
 	x = parseInt(L);
 	k = parseInt(K);
@@ -50,6 +52,7 @@ function feist_pass(input,k){
 	}
 	return R+Rout; 
 };
+// The key is hard-coded too.
 key="248473";	
 function scrambler(input){
 	var i;
@@ -70,21 +73,36 @@ function coord_to_words(coordinate){
 	lat = parseFloat(coordinate[0]);
   	lon = parseFloat(coordinate[1]);
 	//document.getElementById("output_text2").innerHTML= lat+" "+lon;
+
+	// We truncate teh numbers to 5 d.p. and 
+	// map to (0 padded) 7 character strings of digits. 
   	lat = Math.round(lat * 10000) +  900000;
   	lon = Math.round(lon * 10000) + 1800000;
   	lat = ('' + lat).padStart(7,'0');
  	lon = ('' + lon).padStart(7,'0');
+
+	// lat is a most 1800000 and lon is at most 3600000
+	// We keep the first digits for use as first digits of our 
+	// word indices, thus making each index < 40k.
 	lat0 = lat.slice(0,1);
 	lon0 = lon.slice(0,1);
 	//document.getElementById("output_text2").innerHTML= lat.slice(1,7)+lon.slice(1,7);
+
+	// Now we scramble 14 digits making the bulk of the coordinates
 	latlon_rest = scrambler(lat.slice(1,7)+lon.slice(1,7));
 	//document.getElementById("output_text2").innerHTML= latlon_rest;
 	//latlon_rest = lat.slice(1,7)+lon.slice(1,7);
+
+	// We combine the inital digits we extracted earlier, with half 
+	// of the scrambled digits to make a new scrambed (lat,lon)
 	lat = lat0 + latlon_rest.slice(0,6);
 	lon = lon0 + latlon_rest.slice(6,12);
+
+	// The word indices are chosen so each is <40k.
   	ind1 = lat.slice(0,5);
   	ind2 = lon.slice(0,5);
   	ind3 = '0'+lat.slice(5,7) + lon.slice(5,7);
+
 //	document.getElementById("output_text4").innerHTML= ind1 +" "+ ind2 + " " + ind3;
 //	document.getElementById("output_text2").innerHTML= ilist[wlist[ind1]] +" "+ ilist[wlist[ind2]] + " " + ilist[wlist[ind3]];
 	document.getElementById("output_text").innerHTML= wlist[ind1] +"."+ wlist[ind2] + "." + wlist[ind3];
