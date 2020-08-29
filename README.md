@@ -1,6 +1,6 @@
 
 This was a small test to show how one might reversibly map each ~1m^2 element
-of the globe onto a 3-tuple of words.
+of the globe onto a 3-tuple of words. Check it out [here](https://pballett.github.io/whatfreewords/).
 
 To do this we needed three things:
 1. A function which maps metre-accurate (latitude, longitude) pairs into three 5-digit integers below 40k.
